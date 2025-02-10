@@ -1,0 +1,258 @@
+MLSW1#show running-config 
+
+Building configuration...
+
+Current configuration : 4742 bytes
+!
+version 12.2(37)SE1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname MLSW1
+!
+!
+enable secret 5 $1$mERr$8iI/4M3cGdjLNKclMAx4G1
+!
+!
+ip dhcp excluded-address 192.168.1.1 192.168.1.3
+ip dhcp excluded-address 192.168.1.17 192.168.1.19
+ip dhcp excluded-address 192.168.1.33 192.168.1.35
+ip dhcp excluded-address 192.168.1.49 192.168.1.51
+ip dhcp excluded-address 192.168.1.65 192.168.1.67
+ip dhcp excluded-address 192.168.1.81 192.168.1.83
+!
+ip dhcp pool TELLER
+ network 192.168.1.0 255.255.255.240
+ default-router 192.168.1.3
+ dns-server 1.1.1.1
+ip dhcp pool ACC-MNGR
+ network 192.168.1.16 255.255.255.240
+ default-router 192.168.1.19
+ dns-server 1.1.1.1
+ip dhcp pool CUS-SRVC
+ network 192.168.1.32 255.255.255.240
+ default-router 192.168.1.35
+ dns-server 1.1.1.1
+ip dhcp pool HR-LEGAL
+ network 192.168.1.48 255.255.255.240
+ default-router 192.168.1.51
+ dns-server 1.1.1.1
+ip dhcp pool SNR-MNGRS
+ network 192.168.1.64 255.255.255.240
+ default-router 192.168.1.67
+ dns-server 1.1.1.1
+ip dhcp pool IT
+ network 192.168.1.80 255.255.255.240
+ default-router 192.168.1.83
+ dns-server 1.1.1.1
+!
+!
+ip routing
+!
+!
+!
+!
+username frank secret 5 $1$mERr$8iI/4M3cGdjLNKclMAx4G1
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name frank.io
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree vlan 20,30 priority 24576
+spanning-tree vlan 10,100 priority 28672
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/1
+!
+interface FastEthernet0/2
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport port-security maximum 30
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+ no switchport
+ ip address 192.168.1.98 255.255.255.240
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/1
+ no switchport
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ no switchport
+ ip address 192.168.1.113 255.255.255.240
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan10
+ mac-address 00d0.bab9.6201
+ ip address 192.168.1.1 255.255.255.240
+ ip access-group TELLER in
+ standby version 2
+ standby 10 ip 192.168.1.3
+ standby 10 preempt
+!
+interface Vlan20
+ mac-address 00d0.bab9.6202
+ ip address 192.168.1.17 255.255.255.240
+ ip access-group ACC-MNGR in
+ standby version 2
+ standby 20 ip 192.168.1.19
+ standby 20 preempt
+!
+interface Vlan30
+ mac-address 00d0.bab9.6203
+ ip address 192.168.1.33 255.255.255.240
+ ip access-group CUS-SRVC in
+ standby version 2
+ standby 30 ip 192.168.1.35
+ standby 30 preempt
+!
+interface Vlan40
+ mac-address 00d0.bab9.6204
+ ip address 192.168.1.49 255.255.255.240
+ standby version 2
+ standby 40 ip 192.168.1.51
+ standby 40 preempt
+!
+interface Vlan50
+ mac-address 00d0.bab9.6205
+ ip address 192.168.1.65 255.255.255.240
+ standby version 2
+ standby 50 ip 192.168.1.67
+ standby 50 preempt
+!
+interface Vlan60
+ mac-address 00d0.bab9.6206
+ ip address 192.168.1.81 255.255.255.240
+ standby version 2
+ standby 60 ip 192.168.1.83
+ standby 60 preempt
+!
+interface Vlan70
+ mac-address 00d0.bab9.6207
+ ip address 1.1.1.2 255.255.255.240
+ standby version 2
+ standby 70 ip 1.1.1.4
+ standby 70 preempt
+!
+interface Vlan100
+ mac-address 00d0.bab9.6208
+ ip address 10.10.10.1 255.255.255.240
+ standby version 2
+ standby 100 ip 10.10.10.3
+ standby 100 preempt
+!
+interface Vlan200
+ mac-address 00d0.bab9.6209
+ ip address 10.10.20.1 255.255.255.240
+ standby version 2
+ standby 200 ip 10.10.20.3
+ standby 200 preempt
+!
+router ospf 1
+ log-adjacency-changes
+ network 0.0.0.0 255.255.255.255 area 0
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+ip access-list extended TELLER
+ deny icmp 192.168.1.0 0.0.0.15 192.168.1.48 0.0.0.15
+ deny icmp 192.168.1.0 0.0.0.15 192.168.1.64 0.0.0.15
+ permit ip any any
+ip access-list extended ACC-MNGR
+ deny icmp 192.168.1.16 0.0.0.15 192.168.1.48 0.0.0.15
+ deny icmp 192.168.1.16 0.0.0.15 192.168.1.64 0.0.0.15
+ permit ip any any
+ip access-list extended CUS-SRVC
+ deny icmp 192.168.1.32 0.0.0.15 192.168.1.48 0.0.0.15
+ deny icmp 192.168.1.32 0.0.0.15 192.168.1.64 0.0.0.15
+ permit ip any any
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login local
+ transport input ssh
+!
+!
+!
+!
+end
